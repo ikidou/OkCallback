@@ -1,0 +1,16 @@
+{
+  "code": 0,
+  "message": "Success",
+  "data": [
+    {
+      "name": "jack",
+      "age": 23,
+      "sex": "MALE"
+    },
+    {
+      "name": "lucy",
+      "age": 18,
+      "sex": "FEMALE"
+    }
+  ]
+}

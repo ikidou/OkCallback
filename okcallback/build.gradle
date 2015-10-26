@@ -1,0 +1,129 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'com.github.dcendents.android-maven'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.1"
+
+    defaultConfig {
+        minSdkVersion 8
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    lintOptions {
+        abortOnError false
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.google.code.gson:gson:2.3.1'
+    compile 'com.squareup.okhttp:okhttp:2.5.0'
+}
+
+//Conf
+def GROUPID = 'cn.ikidou'
+def ARTIFACTID = project.name
+def VERSION = android.defaultConfig.versionName
+def PROJCET_NAME = project.name
+def PROJCET_DESCRIPTION = 'OkHttp Async Callback for Android and Java'
+def LICENSE = 'The Apache Software License, Version 2.0'
+def LICENSE_URL = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+def HOME_URL = 'https://github.com/ikidou/okcallback'
+def GIT_URL = HOME_URL + ".git"
+def ISSUE_TRACKER_URL = HOME_URL + "/issues"
+def DEVELOPER_ID = 'ikidou'
+def DEVELOPER_NAME = '怪盗kidou'
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+bintray {
+    user = properties.getProperty("bintrayUser")
+    key = properties.getProperty("bintrayApiKey")
+    configurations = ['archives'] //When uploading configuration files
+    pkg {
+        repo = 'maven'
+        name = ARTIFACTID
+        desc = PROJCET_DESCRIPTION
+        websiteUrl = HOME_URL
+        issueTrackerUrl = ISSUE_TRACKER_URL
+        vcsUrl = GIT_URL
+        licenses = ['Apache-2.0']
+        labels = ['okhttp', 'gson', 'json', 'callback', 'android']
+        publicDownloadNumbers = true
+    }
+}
+version = VERSION
+group = GROUPID
+artifacts
+install {
+    repositories.mavenInstaller {
+        pom.artifactId = ARTIFACTID
+        pom {
+            project {
+                packaging 'jar'
+                name ARTIFACTID
+                url GIT_URL
+                licenses {
+                    license {
+                        name LICENSE
+                        url LICENSE_URL
+                    }
+                }
+                developers {
+                    developer {
+                        id DEVELOPER_ID
+                        name DEVELOPER_NAME
+                    }
+                }
+                scm {
+                    connection GIT_URL
+                    developerConnection GIT_URL
+                    url HOME_URL
+
+                }
+            }
+        }
+    }
+}
+
+android.libraryVariants.all { variant ->
+    def name = variant.buildType.name
+    if (name.equals(com.android.builder.core.BuilderConstants.DEBUG)) {
+        return; // Skip debug builds.
+    }
+    def task = project.tasks.create "jar${name.capitalize()}", Jar
+    task.dependsOn variant.javaCompile
+    task.from variant.javaCompile.destinationDir
+    task.exclude('test/', 'BuildConfig.class', 'R.class')
+    task.exclude { it.name.startsWith('R$'); }
+    artifacts.add('archives', task);
+}
+
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath = files(project.android.getBootClasspath())
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
