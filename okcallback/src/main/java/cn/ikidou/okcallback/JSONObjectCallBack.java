@@ -2,7 +2,6 @@ package cn.ikidou.okcallback;
 
 import com.squareup.okhttp.Response;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -24,16 +23,12 @@ public abstract class JSONObjectCallBack extends OkCallBack<JSONObject> {
      *
      * @param response OkHttp Response 服务器响应
      * @return Result 转换后的结果
-     * @throws IOException
+     * @throws Exception
      */
     @Override
-    protected final JSONObject convert(Response response) throws IOException {
+    protected final JSONObject convert(Response response) throws Exception {
         String string = response.body().string();
-        try {
-            JSONObject object = new JSONObject(string);
-            return object;
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
+        JSONObject object = new JSONObject(string);
+        return object;
     }
 }

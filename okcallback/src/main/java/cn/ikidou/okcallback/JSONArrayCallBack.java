@@ -3,7 +3,6 @@ package cn.ikidou.okcallback;
 import com.squareup.okhttp.Response;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 
 import java.io.IOException;
 
@@ -24,16 +23,12 @@ public abstract class JSONArrayCallBack extends OkCallBack<JSONArray> {
      *
      * @param response OkHttp Response 服务器响应
      * @return Result 转换后的结果
-     * @throws IOException
+     * @throws Exception
      */
     @Override
-    protected JSONArray convert(Response response) throws IOException {
+    protected JSONArray convert(Response response) throws Exception {
         String string = response.body().string();
-        try {
-            JSONArray array = new JSONArray(string);
-            return array;
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
+        JSONArray array = new JSONArray(string);
+        return array;
     }
 }

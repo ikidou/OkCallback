@@ -103,8 +103,7 @@ android.libraryVariants.all { variant ->
     def task = project.tasks.create "jar${name.capitalize()}", Jar
     task.dependsOn variant.javaCompile
     task.from variant.javaCompile.destinationDir
-    task.exclude('test/', 'BuildConfig.class', 'R.class')
-    task.exclude { it.name.startsWith('R$'); }
+    task.exclude('test/', '**/BuildConfig.class', '**/R.class','**/R\$*.class')
     artifacts.add('archives', task);
 }
 

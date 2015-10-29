@@ -20,10 +20,10 @@ public abstract class ByteArrayCallBack extends OkCallBack<byte[]> {
      *
      * @param response OkHttp Response 服务器响应
      * @return Result 转换后的结果
-     * @throws IOException
+     * @throws Exception
      */
     @Override
-    protected final byte[] convert(Response response) throws IOException {
+    protected final byte[] convert(Response response) throws Exception {
         byte[] bytes = response.body().bytes();
         return bytes;
     }

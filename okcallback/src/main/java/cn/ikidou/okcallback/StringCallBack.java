@@ -23,7 +23,7 @@ public abstract class StringCallBack extends OkCallBack<String> {
      * @throws IOException
      */
     @Override
-    protected final String convert(Response response) throws IOException {
+    protected final String convert(Response response) throws Exception {
         String string = response.body().string();
         return string;
     }

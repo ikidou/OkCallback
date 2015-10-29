@@ -57,10 +57,10 @@ public abstract class GsonCallBack<T> extends OkCallBack<T> {
      *
      * @param response OkHttp Response 服务器响应
      * @return Result 转换后的结果
-     * @throws IOException
+     * @throws Exception
      */
     @Override
-    protected final T convert(Response response) throws IOException {
+    protected final T convert(Response response) throws Exception {
         Reader reader = response.body().charStream();
         if (mGson == null) {
             mGson = new Gson();

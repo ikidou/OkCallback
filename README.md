@@ -24,7 +24,7 @@ OkHttp Async Callback for Android and java [ ![Download](https://api.bintray.com
 
 ## Examples 
 
-Use before
+### Use before
 
 ```java
 public void useBefore(View v) {
@@ -58,7 +58,7 @@ public void useBefore(View v) {
 
 ```
 
-Use after
+### Use after
 
 ```java
 private OkHttpClient okHttpClient = new OkHttpClient();
