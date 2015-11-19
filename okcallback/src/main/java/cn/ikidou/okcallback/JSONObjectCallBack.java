@@ -4,8 +4,6 @@ import com.squareup.okhttp.Response;
 
 import org.json.JSONObject;
 
-import java.io.IOException;
-
 /**
  * 该类继承自 OkCallBack<JSONObject>，自动将结果转为JSONObject类型
  *
@@ -15,6 +13,7 @@ import java.io.IOException;
  * @see GsonCallBack
  * @see JSONArrayCallBack
  * @see StringCallBack
+ * @since 1.0.0
  */
 public abstract class JSONObjectCallBack extends OkCallBack<JSONObject> {
 

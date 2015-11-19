@@ -13,6 +13,7 @@ import java.io.IOException;
  * @see GsonCallBack
  * @see JSONArrayCallBack
  * @see JSONObjectCallBack
+ * @since 1.0.0
  */
 public abstract class StringCallBack extends OkCallBack<String> {
     /**

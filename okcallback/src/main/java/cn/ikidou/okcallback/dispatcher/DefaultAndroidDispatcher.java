@@ -5,6 +5,8 @@ import android.os.Looper;
 
 /**
  * Android环境下的调度器，使得被调度的方法运行在主线程中
+ *
+ * @since 1.0.0
  */
 class DefaultAndroidDispatcher extends Dispatcher {
     DefaultAndroidDispatcher() {

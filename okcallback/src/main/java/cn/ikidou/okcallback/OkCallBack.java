@@ -14,7 +14,7 @@ import cn.ikidou.okcallback.dispatcher.Dispatcher;
  * Callback 的抽像实现类，可以指定范型，子类在{@link #convert(Response)}方法中实现 Http的响应与结果的转换。<br/>
  * 如果正常回调并实现转换结果会在 {@link #onSuccess(Headers, Object)} 抽像方法中以参数的形式传递。<br/>
  * 如果出现错误会回调 {@link #onError(int, Request, Exception)} 抽像方法。<br/>
- * 该超类还提供了 {@link #afterAll(boolean)} 、{@link #checkCode()}、HANDLER常量 帮助提供程序的灵活性。<br/>
+ * 该超类还提供了 {@link #onComplete(boolean)} 、{@link #checkCode()}、HANDLER常量 帮助提供程序的灵活性。<br/>
  *
  * @param <T> 目标结果类型
  * @author 怪盗kidou bestkidou@gmail.com
@@ -23,9 +23,19 @@ import cn.ikidou.okcallback.dispatcher.Dispatcher;
  * @see JSONArrayCallBack
  * @see JSONObjectCallBack
  * @see StringCallBack
+ * @since 1.0.0
  */
 public abstract class OkCallBack<T> implements Callback {
     private int responseCode;
+
+    public OkCallBack() {
+        Dispatcher.getDefault().dispatch(new Runnable() {
+            @Override
+            public void run() {
+                onStart();
+            }
+        });
+    }
 
     /**
      * 实现Callback.onResponse，当远程服务器正常返回数据时回调该方法<br/>
@@ -33,6 +43,7 @@ public abstract class OkCallBack<T> implements Callback {
      *
      * @param response OkHttp响应
      * @throws IOException
+     * @since 1.0.0
      */
     public final void onResponse(final Response response) throws IOException {
         responseCode = response.code();
@@ -57,12 +68,14 @@ public abstract class OkCallBack<T> implements Callback {
      * @param request Okhttp request
      * @param e
      * @see #onError(int, Request, Exception)
+     * @since 1.0.0
      */
     private void dispatchError(final Request request, final Exception e) {
         Dispatcher.getDefault().dispatch(new Runnable() {
             @Override
             public void run() {
                 onError(responseCode, request, e);
+                onComplete(false);
                 afterAll(false);
             }
         });
@@ -74,12 +87,14 @@ public abstract class OkCallBack<T> implements Callback {
      * @param headers
      * @param res
      * @see #onSuccess(Headers, Object)
+     * @since 1.0.0
      */
     private void dispatchSuccess(final Headers headers, final T res) {
         Dispatcher.getDefault().dispatch(new Runnable() {
             @Override
             public void run() {
                 onSuccess(headers, res);
+                onComplete(true);
                 afterAll(true);
             }
         });
@@ -90,6 +105,7 @@ public abstract class OkCallBack<T> implements Callback {
      *
      * @param request
      * @param e
+     * @since 1.0.0
      */
     @Override
     public final void onFailure(final Request request, final IOException e) {
@@ -102,6 +118,7 @@ public abstract class OkCallBack<T> implements Callback {
      * @param response OkHttp Response 服务器响应
      * @return Result 转换后的结果
      * @throws Exception 任何的Exception抛出都会回调到{@link #onError(int, Request, Exception)}
+     * @since 1.0.0
      */
     protected abstract T convert(Response response) throws Exception;
 
@@ -110,6 +127,7 @@ public abstract class OkCallBack<T> implements Callback {
      *
      * @param headers http headers
      * @param result  the final result
+     * @since 1.0.0
      */
     public abstract void onSuccess(Headers headers, T result);
 
@@ -126,6 +144,7 @@ public abstract class OkCallBack<T> implements Callback {
      * @param request
      * @param e       异常信息
      * @see #checkCode()
+     * @since 1.0.0
      */
     public abstract void onError(int code, Request request, Exception e);
 
@@ -133,9 +152,18 @@ public abstract class OkCallBack<T> implements Callback {
      * 该方法会被 {@link #onResponse(Response)} 调用以确定是否检查 httpCode >=400 ，默认值 <b>true</b>
      *
      * @return 是否检查 code >= 400 的情况，如需自行处理，返回 <b>false</b>
+     * @since 1.0.0
      */
     protected boolean checkCode() {
         return true;
+    }
+
+    /**
+     * 该方法将会在构造方法中调用，以保证该方法是最先执行的
+     *
+     * @since 1.0.1
+     */
+    protected void onStart() {
     }
 
     /**
@@ -143,7 +171,19 @@ public abstract class OkCallBack<T> implements Callback {
      * Android 环境下在UI线程中执行，Java环境中在调用线程执行
      *
      * @param successful 当成功回调时为<code>true</code>，如果出现错误则为<code>false</code>
+     * @deprecated 从1.0.1版本过时， 请用 {@link #onComplete(boolean)} 代替
      */
+    @Deprecated
     protected void afterAll(boolean successful) {
+    }
+
+    /**
+     * 该方法将会在{@link #onSuccess(Headers, Object)} 或 {@link #onError(int, Request, Exception)} 后回调
+     * Android 环境下在UI线程中执行，Java环境中在调用线程执行
+     *
+     * @param successful 当成功回调时为<code>true</code>，如果出现错误则为<code>false</code>
+     * @since 1.0.1
+     */
+    protected void onComplete(boolean successful) {
     }
 }

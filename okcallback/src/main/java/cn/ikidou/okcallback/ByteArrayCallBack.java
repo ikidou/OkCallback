@@ -2,8 +2,6 @@ package cn.ikidou.okcallback;
 
 import com.squareup.okhttp.Response;
 
-import java.io.IOException;
-
 /**
  * 该类继承自 OkCallBack<byte[]>，自动将结果转为byte[]类型
  *
@@ -13,6 +11,7 @@ import java.io.IOException;
  * @see GsonCallBack
  * @see JSONArrayCallBack
  * @see JSONObjectCallBack
+ * @since 1.0.0
  */
 public abstract class ByteArrayCallBack extends OkCallBack<byte[]> {
     /**

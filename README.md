@@ -89,20 +89,18 @@ public void gson(View v) {
 
 ## Download
 ```gradle
-dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'cn.ikidou:okcallback:1.0.0'
-}
-allprojects {
-    repositories {
-        jcenter()
-        maven{
-            url 'https://dl.bintray.com/ikidou/maven'
-        }
-    }
-}
+compile 'cn.ikidou:okcallback:1.0.1'
 ```
-[Download Jar](https://dl.bintray.com/ikidou/maven/cn/ikidou/okcallback/1.0.0/)
+[Download Jar](https://dl.bintray.com/ikidou/maven/cn/ikidou/okcallback/1.0.1/)
+## Change Log
+ **v1.0.1** 
+
+1. 添加`onStart`方法，并使其在构造方法中通过`Dispatcher`分发，保证最先执行
+2. 使用`onComplete(boolean successful)`代替`afterAll(boolean successful)`
+3. `afterAll(boolean successful)` 过时，但仍可使用
+
+ **v1.0.0** 初始化基础库
+
 
 License
 -------

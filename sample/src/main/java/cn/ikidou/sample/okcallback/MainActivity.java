@@ -27,20 +27,11 @@ import cn.ikidou.okcallback.JSONArrayCallBack;
 import cn.ikidou.okcallback.JSONObjectCallBack;
 import cn.ikidou.okcallback.OkCallBack;
 import cn.ikidou.okcallback.StringCallBack;
-import cn.ikidou.okcallback.sample.BuildConfig;
 import cn.ikidou.okcallback.sample.R;
 
 
 public class MainActivity extends Activity {
-    private static final String URL_BASE;
-
-    static {
-        if (BuildConfig.DEBUG) {
-            URL_BASE = "http://192.168.199.135:8000/sample/data/";
-        } else {
-            URL_BASE = "https://raw.githubusercontent.com/ikidou/OkCallback/master/sample/data/";
-        }
-    }
+    private static final String URL_BASE = "https://raw.githubusercontent.com/ikidou/OkCallback/master/sample/data/";
 
     private OkHttpClient okHttpClient = new OkHttpClient();
     private TextView contentTextView;
@@ -147,13 +138,16 @@ public class MainActivity extends Activity {
     }
 
     public void advance(View v) {
-        new ProgressDialog(this);
         final ProgressDialog dialog = new ProgressDialog(this);
         dialog.setMessage("loading...");
-        dialog.show();
         dialog.setCancelable(false);
         String url = URL_BASE + "string.txt1"; // 404
         getCall(url).enqueue(new OkCallBack<String>() {
+            @Override
+            protected void onStart() {
+                dialog.show();
+            }
+
             @Override
             protected String convert(Response response) throws IOException {
                 String s = response.body().string();
@@ -176,7 +170,8 @@ public class MainActivity extends Activity {
             }
 
             @Override
-            protected void afterAll(boolean successful) {
+            protected void onComplete(boolean successful) {
+                // 404 ,checkCode() return false,so successful is true(No Exception caught)
                 dialog.dismiss();
                 if (successful) {
                     Toast.makeText(MainActivity.this, "Get Data Success", Toast.LENGTH_SHORT).show();

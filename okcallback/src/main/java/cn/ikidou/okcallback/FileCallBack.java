@@ -5,7 +5,6 @@ import com.squareup.okhttp.Response;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -18,6 +17,7 @@ import java.io.OutputStream;
  * @see JSONArrayCallBack
  * @see JSONObjectCallBack
  * @see StringCallBack
+ * @since 1.0.0
  */
 public abstract class FileCallBack extends OkCallBack<File> {
     private final File mTarget;

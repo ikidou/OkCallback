@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.internal.$Gson$Types;
 import com.squareup.okhttp.Response;
 
-import java.io.IOException;
 import java.io.Reader;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -19,6 +18,7 @@ import java.lang.reflect.Type;
  * @see JSONArrayCallBack
  * @see JSONObjectCallBack
  * @see StringCallBack
+ * @since 1.0.0
  */
 public abstract class GsonCallBack<T> extends OkCallBack<T> {
     /**
@@ -30,13 +30,20 @@ public abstract class GsonCallBack<T> extends OkCallBack<T> {
      */
     private Gson mGson;
 
+    /**
+     * 默认构造方法
+     *
+     * @since 1.0.0
+     */
     public GsonCallBack() {
         this(null);
     }
 
     /**
+     * 默认构造方法构造方法，支持自定义Gson解析器
      * @param gson 自定义的Gson解析器，你可以使用 {@code GsonBuilder} 来自定义
      * @see #GsonCallBack()
+     * @since 1.0.0
      */
     public GsonCallBack(Gson gson) {
         this.mType = getSuperclassTypeParameter(getClass());

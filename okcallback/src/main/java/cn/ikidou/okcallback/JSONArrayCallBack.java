@@ -4,8 +4,6 @@ import com.squareup.okhttp.Response;
 
 import org.json.JSONArray;
 
-import java.io.IOException;
-
 /**
  * 该类继承自 OkCallBack<JSONArray>，自动将结果转为JSONArray类型
  *
@@ -15,6 +13,7 @@ import java.io.IOException;
  * @see GsonCallBack
  * @see JSONObjectCallBack
  * @see StringCallBack
+ * @since 1.0.0
  */
 public abstract class JSONArrayCallBack extends OkCallBack<JSONArray> {
 
