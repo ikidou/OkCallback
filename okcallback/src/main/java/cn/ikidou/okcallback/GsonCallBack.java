@@ -21,20 +21,11 @@ import java.lang.reflect.Type;
  * @since 1.0.0
  */
 public abstract class GsonCallBack<T> extends OkCallBack<T> {
-    /**
-     * 范型信息
-     */
+
     private final Type mType;
-    /**
-     * JSON 解析器
-     */
+
     private Gson mGson;
 
-    /**
-     * 默认构造方法
-     *
-     * @since 1.0.0
-     */
     public GsonCallBack() {
         this(null);
     }

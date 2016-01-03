@@ -10,7 +10,7 @@ android {
         minSdkVersion 8
         targetSdkVersion 23
         versionCode 1
-        versionName "1.0.1"
+        versionName "1.0.2"
     }
     buildTypes {
         release {
@@ -33,7 +33,6 @@ dependencies {
 def GROUPID = 'cn.ikidou'
 def ARTIFACTID = project.name
 def VERSION = android.defaultConfig.versionName
-def PROJCET_NAME = project.name
 def PROJCET_DESCRIPTION = 'OkHttp Async Callback for Android and Java'
 def LICENSE = 'The Apache Software License, Version 2.0'
 def LICENSE_URL = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
@@ -97,32 +96,33 @@ install {
 
 android.libraryVariants.all { variant ->
     def name = variant.buildType.name
-    if (name.equals(com.android.builder.core.BuilderConstants.DEBUG)) {
-        return; // Skip debug builds.
-    }
     def task = project.tasks.create "jar${name.capitalize()}", Jar
     task.dependsOn variant.javaCompile
     task.from variant.javaCompile.destinationDir
-    task.exclude('test/', '**/BuildConfig.class', '**/R.class','**/R\$*.class')
+    task.exclude('test/', '**/BuildConfig.class', '**/R.class', '**/R\$*.class')
     artifacts.add('archives', task);
 }
 
+// build a jar with source files
 task sourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
     classifier = 'sources'
 }
 
 task javadoc(type: Javadoc) {
-    source = android.sourceSets.main.java.srcDirs
-    classpath = files(project.android.getBootClasspath())
+    failOnError false
+    source = android.sourceSets.main.java.sourceFiles
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    classpath += configurations.compile
 }
 
+// build a jar with javadoc
 task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier = 'javadoc'
     from javadoc.destinationDir
 }
 
 artifacts {
-    archives javadocJar
     archives sourcesJar
+    archives javadocJar
 }

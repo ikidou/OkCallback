@@ -4,7 +4,7 @@ import android.os.Handler;
 import android.os.Looper;
 
 /**
- * Android环境下的调度器，使得被调度的方法运行在主线程中
+ * Android环境下的分发器，使得被调度的方法运行在UI线程中
  *
  * @since 1.0.0
  */

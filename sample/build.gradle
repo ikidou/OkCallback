@@ -21,6 +21,5 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-//    compile project(':okcallback')
-    compile 'cn.ikidou:okcallback:1.0.1'
+    compile project(':okcallback')
 }
