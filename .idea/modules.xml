@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/OkCallback.iml" filepath="$PROJECT_DIR$/OkCallback.iml" />
       <module fileurl="file://$PROJECT_DIR$/okcallback/okcallback.iml" filepath="$PROJECT_DIR$/okcallback/okcallback.iml" />
+      <module fileurl="file://$PROJECT_DIR$/okcallback3/okcallback3.iml" filepath="$PROJECT_DIR$/okcallback3/okcallback3.iml" />
       <module fileurl="file://$PROJECT_DIR$/sample/sample.iml" filepath="$PROJECT_DIR$/sample/sample.iml" />
     </modules>
   </component>
